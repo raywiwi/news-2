@@ -46,7 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// ── FORMULARIO CON VALIDACIÓN ──
+// Inicializa EmailJS con tu public key
+emailjs.init('IbQjYnuIkXHlh9DTN')
+
 document.getElementById('formulario').addEventListener('submit', function(e) {
   e.preventDefault()
 
@@ -60,7 +62,6 @@ document.getElementById('formulario').addEventListener('submit', function(e) {
   const errorEmail = document.getElementById('error-email')
   const errorMensaje = document.getElementById('error-mensaje')
 
-  // Limpiar errores anteriores
   errorNombre.textContent = ''
   errorEmail.textContent = ''
   errorMensaje.textContent = ''
@@ -68,14 +69,12 @@ document.getElementById('formulario').addEventListener('submit', function(e) {
   email.classList.remove('invalido')
   mensaje.classList.remove('invalido')
 
-  // Validar nombre — mínimo 3 caracteres
   if (nombre.value.trim().length < 3) {
     errorNombre.textContent = 'El nombre debe tener al menos 3 caracteres'
     nombre.classList.add('invalido')
     valido = false
   }
 
-  // Validar email — formato correcto
   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!regexEmail.test(email.value.trim())) {
     errorEmail.textContent = 'Ingresa un email válido'
@@ -83,20 +82,31 @@ document.getElementById('formulario').addEventListener('submit', function(e) {
     valido = false
   }
 
-  // Validar mensaje — mínimo 10 caracteres
   if (mensaje.value.trim().length < 10) {
     errorMensaje.textContent = 'El mensaje debe tener al menos 10 caracteres'
     mensaje.classList.add('invalido')
     valido = false
   }
 
-  // Si todo está bien — mostrar éxito
   if (valido) {
-    document.getElementById('exito').classList.remove('oculto')
-    document.getElementById('formulario').reset()
-    setTimeout(() => {
-      document.getElementById('exito').classList.add('oculto')
-    }, 3000)
+    // Envía el correo real con EmailJS
+    emailjs.send(
+      'service_2bu66ve',
+      'template_nm4s49i',
+      {
+        nombre: nombre.value,
+        email: email.value,
+        mensaje: mensaje.value
+      }
+    ).then(() => {
+      document.getElementById('exito').classList.remove('oculto')
+      document.getElementById('formulario').reset()
+      setTimeout(() => {
+        document.getElementById('exito').classList.add('oculto')
+      }, 3000)
+    }).catch((error) => {
+      console.log('Error enviando:', error)
+    })
   }
 })
 
