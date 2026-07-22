@@ -34,7 +34,7 @@ h3:hover{
 
 nav{
     background-color: #000000;
-    padding: 1em 4em;
+    padding: 1em 8em;
     color: white;
     display: flex;
     width: 100%;
@@ -244,10 +244,7 @@ nav .menu2{
 
 
 
-
 /*___-------------------------------encabezado--------------------------___*/
-
-
 
 
 .header .encabezado {
@@ -337,7 +334,7 @@ nav .menu2{
     margin: auto;
     color: white;
     flex-direction: row;
-    width: 88%;
+    width: 80%;
 }
 
 
@@ -603,7 +600,7 @@ body.tendencias .not h3{
 /*__________ FORMULARIO -------------------------*/
 
 #contacto {
-    width: 88%;
+    width: 80%;
     margin: 40px auto;
     color: white;
   }
@@ -814,7 +811,7 @@ footer a{
 
 .slider-container .container {
     position: relative;
-    width: 88%;
+    width: 80%;
     overflow: hidden;
     margin-top: 40px;
     margin-left: auto;
