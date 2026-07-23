@@ -202,6 +202,42 @@ async function cargarSlider() {
 
 cargarSlider()
 
+// lista notas recientes //
+
+async function cargarUltimaHora() {
+  try {
+    const respuesta = await fetch(
+      `https://content.guardianapis.com/search?page-size=8&show-fields=headline&api-key=${API_KEY}`
+    )
+    const datos = await respuesta.json()
+    const noticias = datos.response.results
+    const lista = document.getElementById('lista-ultima-hora')
+    lista.innerHTML = ''
+
+    noticias.forEach(noticia => {
+      const fecha = new Date(noticia.webPublicationDate)
+      const hora = fecha.toLocaleTimeString('es-MX', {
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+
+      lista.innerHTML += `
+        <li>
+          <a href="${noticia.webUrl}" target="_blank">
+            ${noticia.fields.headline}
+          </a>
+          <div class="hora">${hora}</div>
+        </li>
+      `
+    })
+
+  } catch (error) {
+    console.log('Error última hora:', error)
+  }
+}
+
+cargarUltimaHora()
+
 // Deportes //
 
 async function cargarNoticiaDeporte() {

@@ -126,23 +126,34 @@
     </div>
 
 
+
     <div class="slider-container">
         <div class="container">
-        <div class="slider" id="slider">
-            <!-- vacío — JavaScript lo llena -->
+      
+          <!-- WRAPPER DEL SLIDER CON SUS BOTONES -->
+          <div class="slider-wrapper">
+            <div class="slider" id="slider"></div>
+            <button class="prev" onclick="prevSlide()">
+                <img src="icon/arrow2.svg" alt="">
+              </button>
+              <button class="next" onclick="nextSlide()">
+                <img src="icon/arrow.svg">
+              </button>
+            <div class="indicators" id="indicators"></div>
           </div>
-          <button class="prev" onclick="prevSlide()">
-            <img src="icon/arrow2.svg" alt="">
-          </button>
-          <button class="next" onclick="nextSlide()">
-            <img src="icon/arrow.svg">
-          </button>
-          <div class="indicators" id="indicators">
-            <!-- vacío — JavaScript lo llena -->
+      
+          <!-- LISTA ÚLTIMA HORA -->
+          <div class="ultima-hora">
+            <div class="ultima-hora-header">
+              <span class="live-dot"></span>
+              <p>Última hora</p>
+            </div>
+            <ul id="lista-ultima-hora"></ul>
           </div>
+      
         </div>
         <div class="linea"></div>
-    </div>
+      </div>
 
 
 
