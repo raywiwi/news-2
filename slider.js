@@ -111,12 +111,12 @@ document.getElementById('formulario').addEventListener('submit', function(e) {
 })
 
 // ── API NOTICIAS ──
-const API_KEY = '6ad18282-d7ba-4237-8457-daaa8568b501'
+const API_KEY = 'pub_8d145d78a9a141b9af9db491d295716a'
 
 async function cargarSlider() {
   try {
     const respuesta = await fetch(
-        `https://content.guardianapis.com/search?page-size=3&show-fields=headline,trailText,thumbnail&image-size=large&api-key=${API_KEY}`
+      `https://newsdata.io/api/1/news?apikey=${API_KEY}&language=es&country=mx`
     )
     const datos = await respuesta.json()
     const noticias = datos.response.results
