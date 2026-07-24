@@ -119,7 +119,7 @@ async function cargarSlider() {
       `https://newsdata.io/api/1/news?apikey=${API_KEY}&language=es&country=mx`
     )
     const datos = await respuesta.json()
-    const noticias = datos.response.results
+    const noticias = datos.results.slice(0, 3)
 
     const slider = document.getElementById('slider')
     const indicators = document.getElementById('indicators')
@@ -129,39 +129,36 @@ async function cargarSlider() {
 
     noticias.forEach((noticia, index) => {
 
-      const fecha = new Date(noticia.webPublicationDate)
+      const fecha = new Date(noticia.pubDate)
       const fechaFormateada = fecha.toLocaleDateString('es-MX', {
         day: 'numeric', month: 'long', year: 'numeric'
       })
 
-      // ── CREAR EL SLIDE CON createElement ──
       const slideDiv = document.createElement('div')
       slideDiv.classList.add('slide')
       slideDiv.id = `slide-${index + 1}`
       slideDiv.style.cursor = 'pointer'
-      slideDiv.onclick = () => location.href = noticia.webUrl
+      slideDiv.onclick = () => location.href = noticia.link
 
-      // ── APLICAR IMAGEN DE FONDO DESDE LA API ──
-      if (noticia.fields.thumbnail) {
+      if (noticia.image_url) {
         slideDiv.style.backgroundImage = `
           linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)),
-          url(${noticia.fields.thumbnail})
+          url(${noticia.image_url})
         `
         slideDiv.style.backgroundSize = 'cover'
         slideDiv.style.backgroundPosition = 'center center'
         slideDiv.style.backgroundRepeat = 'no-repeat'
       }
 
-      // ── CONTENIDO DEL SLIDE ──
       slideDiv.innerHTML = `
         <div class="recientes">
           <p>Última hora</p>
           <img class="live" src="icon/svg-spinners--pulse-3.svg" alt="">
         </div>
         <div class="contenido">
-          <span class="etiqueta-2">${noticia.sectionName}</span>
-          <h1>${noticia.fields.headline}</h1>
-          <p class="sub-text">${noticia.fields.trailText || ''}</p>
+          <span class="etiqueta-2">${noticia.category ? noticia.category[0] : 'Noticias'}</span>
+          <h1>${noticia.title}</h1>
+          <p class="sub-text">${noticia.description || ''}</p>
           <div class="dato">
             <img src="icon/iconamoon--clock-light.svg" alt="">
             <p>${fechaFormateada}</p>
@@ -173,30 +170,16 @@ async function cargarSlider() {
 
       slider.appendChild(slideDiv)
 
-      // ── INDICADORES ──
       const indicator = document.createElement('span')
       indicator.classList.add('indicator')
       indicator.onclick = () => currentSlide(index + 1)
       indicators.appendChild(indicator)
     })
 
-    // Inicializa el slider después de cargar las noticias
     showSlide(0)
 
   } catch (error) {
-    console.log('Error:', error)
-    const slider = document.getElementById('slider')
-    slider.innerHTML = `
-      <div class="slide" id="slide-1" style="background:#111;">
-        <div class="recientes"><p>Última hora</p></div>
-        <div class="contenido">
-          <span class="etiqueta-2">Noticias</span>
-          <h1>Cargando noticias recientes...</h1>
-          <p class="sub-text">Conectando con el servidor.</p>
-        </div>
-      </div>
-    `
-    showSlide(0)
+    console.log('Error slider:', error)
   }
 }
 
@@ -207,15 +190,15 @@ cargarSlider()
 async function cargarUltimaHora() {
   try {
     const respuesta = await fetch(
-      `https://content.guardianapis.com/search?page-size=8&show-fields=headline&api-key=${API_KEY}`
+      `https://newsdata.io/api/1/news?apikey=${API_KEY}&language=es&country=mx`
     )
     const datos = await respuesta.json()
-    const noticias = datos.response.results
+    const noticias = datos.results.slice(0, 8)
     const lista = document.getElementById('lista-ultima-hora')
     lista.innerHTML = ''
 
     noticias.forEach(noticia => {
-      const fecha = new Date(noticia.webPublicationDate)
+      const fecha = new Date(noticia.pubDate)
       const hora = fecha.toLocaleTimeString('es-MX', {
         hour: '2-digit',
         minute: '2-digit'
@@ -223,8 +206,8 @@ async function cargarUltimaHora() {
 
       lista.innerHTML += `
         <li>
-          <a href="${noticia.webUrl}" target="_blank">
-            ${noticia.fields.headline}
+          <a href="${noticia.link}" target="_blank">
+            ${noticia.title}
           </a>
           <div class="hora">${hora}</div>
         </li>
@@ -235,7 +218,6 @@ async function cargarUltimaHora() {
     console.log('Error última hora:', error)
   }
 }
-
 cargarUltimaHora()
 
 // Deportes //
@@ -243,7 +225,7 @@ cargarUltimaHora()
 async function cargarNoticiaDeporte() {
     try {
       const respuesta = await fetch(
-        `https://content.guardianapis.com/search?section=sport&page-size=1&show-fields=headline,trailText,thumbnail&api-key=${API_KEY}`
+        `https://newsdata.io/api/1/news?apikey=${API_KEY}&language=es&country=mx`
       )
       const datos = await respuesta.json()
       const noticia = datos.response.results[0]
