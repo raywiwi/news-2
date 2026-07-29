@@ -404,12 +404,13 @@ body.tendencias .card .linea-2{
 
 .card .nota-02{
     display: flex;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)), url(https://a4.espncdn.com/combiner/i?img=%2Fphoto%2F2025%2F0127%2Fr1443805_1296x729_16%2D9.jpg&w=1140&cquality=40&format=jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 10px;
     height: 320px;
+    color: white;
+    text-decoration: none;
 }
 
 .card .nota-02:hover{
@@ -922,6 +923,7 @@ footer a{
     max-width: 100%;
     flex-direction: column;
     gap: 0.5em;
+    align-items: flex-start;
   }
   
   .slide .contenido h1 {

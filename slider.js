@@ -252,3 +252,79 @@ async function cargarNoticiaDeporte() {
   }
   
   cargarNoticiaDeporte()
+
+  async function cargarDeportes() {
+    try {
+      const respuesta = await fetch(
+        `https://newsdata.io/api/1/news?apikey=${API_KEY}&language=es&country=mx&category=sports`
+      )
+      const datos = await respuesta.json()
+      const noticias = datos.results.filter(n => 
+        n.category && n.category.includes('sports')
+      )
+  
+      // ── NOTICIA PRINCIPAL ── nota-02 con imagen de fondo
+      const noticia1 = noticias[0]
+      const contenedorPrincipal = document.getElementById('noticia-principal-deporte')
+  
+      const fecha1 = new Date(noticia1.pubDate)
+      const fechaFormateada1 = fecha1.toLocaleDateString('es-MX', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      })
+  
+      const nota02 = document.createElement('div')
+      nota02.classList.add('nota-02')
+  
+      if (noticia1.image_url) {
+        nota02.style.backgroundImage = `
+          linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0)),
+          url(${noticia1.image_url})
+        `
+      }
+  
+      nota02.innerHTML = `
+        <div class="text">
+          <h2>${noticia1.title}</h2>
+          <p class="sec-card-one">${fechaFormateada1}</p>
+          <h4>${noticia1.description || ''}</h4>
+        </div>
+      `
+      nota02.onclick = () => location.href = noticia1.link
+      nota02.style.cursor = 'pointer'
+      contenedorPrincipal.appendChild(nota02)
+  
+      // ── DOS NOTAS SECUNDARIAS ──
+      const contenedorNotas = document.getElementById('notas-deporte')
+      const notasSecundarias = noticias.slice(1, 3)
+  
+      notasSecundarias.forEach(noticia => {
+        const fecha = new Date(noticia.pubDate)
+        const fechaFormateada = fecha.toLocaleDateString('es-MX', {
+          day: 'numeric', month: 'long', year: 'numeric'
+        })
+  
+        const not = document.createElement('div')
+        not.classList.add('not')
+        not.onclick = () => location.href = noticia.link
+        not.style.cursor = 'pointer'
+  
+        not.innerHTML = `
+          <img class="img-not" 
+               src="${noticia.image_url || ''}" 
+               alt="${noticia.title}"
+               onerror="this.style.display='none'">
+          <div class="title">
+            <a class="sub-etiqueta">Deportes</a>
+            <h3>${noticia.title}</h3>
+            <p class="sec-card">${fechaFormateada}</p>
+          </div>
+        `
+        contenedorNotas.appendChild(not)
+      })
+  
+    } catch (error) {
+      console.log('Error deportes:', error)
+    }
+  }
+  
+  cargarDeportes()
