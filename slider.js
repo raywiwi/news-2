@@ -220,6 +220,25 @@ async function cargarUltimaHora() {
 }
 cargarUltimaHora()
 
+function actualizarBarraScroll() {
+  const lista = document.getElementById('lista-ultima-hora')
+  const barra = document.querySelector('.barra-scroll-thumb')
+  
+  if (!lista || !barra) return
+  
+  const porcentaje = lista.scrollTop / (lista.scrollHeight - lista.clientHeight)
+  const trackAltura = document.querySelector('.barra-scroll-track').clientHeight
+  const thumbAltura = trackAltura * (lista.clientHeight / lista.scrollHeight)
+  const posicion = porcentaje * (trackAltura - thumbAltura)
+  
+  barra.style.height = thumbAltura + 'px'
+  barra.style.top = posicion + 'px'
+}
+
+document.getElementById('lista-ultima-hora')?.addEventListener('scroll', actualizarBarraScroll)
+
+document.querySelector('.ultima-hora')?.addEventListener('scroll', actualizarBarraScroll)
+
 // Deportes //
 
 async function cargarNoticiaDeporte() {
